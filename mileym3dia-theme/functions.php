@@ -9,6 +9,14 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Define theme version constant
+define('MILEYM3DIA_VERSION', '1.0.0');
+
+// Include required files
+require get_template_directory() . '/inc/template-tags.php';
+require get_template_directory() . '/inc/class-walker-nav-menu.php';
+require get_template_directory() . '/inc/customizer.php';
+
 // Theme setup
 function mileym3dia_setup() {
     add_theme_support('title-tag');
@@ -18,10 +26,19 @@ function mileym3dia_setup() {
     add_theme_support('customize-selective-refresh-widgets');
     add_theme_support('align-wide');
     add_theme_support('responsive-embeds');
+    add_theme_support('custom-logo', array(
+        'height'      => 100,
+        'width'       => 400,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ));
+    add_theme_support('custom-background');
     
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'mileym3dia'),
         'footer'  => __('Footer Menu', 'mileym3dia'),
+        'mobile'  => __('Mobile Menu', 'mileym3dia'),
+        'social'  => __('Social Links Menu', 'mileym3dia'),
     ));
     
     set_post_thumbnail_size(1920, 1080, true);
@@ -89,9 +106,29 @@ function mileym3dia_custom_excerpt($limit) {
 // Register widget areas
 function mileym3dia_widgets_init() {
     register_sidebar(array(
-        'name'          => __('Sidebar', 'mileym3dia'),
-        'id'            => 'sidebar-1',
-        'description'   => __('Add widgets here.', 'mileym3dia'),
+        'name'          => __('Header', 'mileym3dia'),
+        'id'            => 'header-1',
+        'description'   => __('Header widgets.', 'mileym3dia'),
+        'before_widget' => '<div id="%1$s" class="header-widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<span class="screen-reader-text">',
+        'after_title'   => '</span>',
+    ));
+    
+    register_sidebar(array(
+        'name'          => __('Homepage', 'mileym3dia'),
+        'id'            => 'homepage-1',
+        'description'   => __('Homepage widgets.', 'mileym3dia'),
+        'before_widget' => '<div id="%1$s" class="homepage-widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
+    ));
+    
+    register_sidebar(array(
+        'name'          => __('Blog Sidebar', 'mileym3dia'),
+        'id'            => 'sidebar-blog',
+        'description'   => __('Blog sidebar widgets.', 'mileym3dia'),
         'before_widget' => '<section id="%1$s" class="widget %2$s">',
         'after_widget'  => '</section>',
         'before_title'  => '<h2 class="widget-title">',
@@ -99,9 +136,49 @@ function mileym3dia_widgets_init() {
     ));
     
     register_sidebar(array(
-        'name'          => __('Footer', 'mileym3dia'),
+        'name'          => __('Main Sidebar', 'mileym3dia'),
+        'id'            => 'sidebar-1',
+        'description'   => __('Main sidebar widgets.', 'mileym3dia'),
+        'before_widget' => '<section id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title">',
+        'after_title'   => '</h2>',
+    ));
+    
+    register_sidebar(array(
+        'name'          => __('Footer 1', 'mileym3dia'),
         'id'            => 'footer-1',
-        'description'   => __('Footer widgets.', 'mileym3dia'),
+        'description'   => __('Footer column 1 widgets.', 'mileym3dia'),
+        'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="footer-widget-title">',
+        'after_title'   => '</h3>',
+    ));
+    
+    register_sidebar(array(
+        'name'          => __('Footer 2', 'mileym3dia'),
+        'id'            => 'footer-2',
+        'description'   => __('Footer column 2 widgets.', 'mileym3dia'),
+        'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="footer-widget-title">',
+        'after_title'   => '</h3>',
+    ));
+    
+    register_sidebar(array(
+        'name'          => __('Footer 3', 'mileym3dia'),
+        'id'            => 'footer-3',
+        'description'   => __('Footer column 3 widgets.', 'mileym3dia'),
+        'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="footer-widget-title">',
+        'after_title'   => '</h3>',
+    ));
+    
+    register_sidebar(array(
+        'name'          => __('Footer 4', 'mileym3dia'),
+        'id'            => 'footer-4',
+        'description'   => __('Footer column 4 widgets.', 'mileym3dia'),
         'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="footer-widget-title">',
