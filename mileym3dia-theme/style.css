@@ -1,0 +1,27 @@
+<?php
+/**
+ * MILEYM3DIA Theme
+ *
+ * @package MILEYM3DIA
+ */
+
+/*
+Theme Name: MILEYM3DIA
+Theme URI: https://mileym3dia.com
+Author: MILEYM3DIA
+Author URI: https://mileym3dia.com
+Description: A bold, art-directed creative media theme combining underground culture, music, digital art, and editorial design. Dark, cinematic, experimental.
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mileym3dia
+Tags: dark, creative, portfolio, blog, custom-colors, custom-menu, featured-images, theme-options
+*/
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+define('MILEYM3DIA_VERSION', '1.0.0');
+define('MILEYM3DIA_DIR', get_template_directory());
+define('MILEYM3DIA_URI', get_template_directory_uri());
