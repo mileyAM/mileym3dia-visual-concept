@@ -1,22 +1,40 @@
-<?php get_header(); ?>
+<?php
+/**
+ * 404 Error Template
+ *
+ * @package MILEYM3DIA
+ */
 
-<main class="site-main" id="siteMain">
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-    <section class="hero" style="min-height: 80vh;">
-        <div class="hero-grid"></div>
-        
-        <div class="container hero-inner text-center">
-            <h1 class="hero-title" style="font-size: clamp(4rem, 20vw, 15rem); color: var(--color-red);">
-                404
-            </h1>
-            <p class="hero-subtitle" style="margin: 0 auto;">
-                Page Not Found<br>
-                The content you're looking for doesn't exist or has been moved.
-            </p>
-            <a href="<?php echo esc_url(home_url('/')); ?>" class="cta-email" style="margin-top: var(--spacing-md); display: inline-block;">Return Home →</a>
+get_header();
+?>
+
+<main id="primary" class="site-main">
+    <div class="error-404">
+        <div class="error-content">
+            <span class="error-number">404</span>
+            <h1 class="error-title"><?php esc_html_e('Page Not Found', 'mileym3dia'); ?></h1>
+            <p class="error-description"><?php esc_html_e("The page you're looking for doesn't exist or has been moved.", 'mileym3dia'); ?></p>
+            
+            <div class="error-actions">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="btn btn--primary">
+                    <?php esc_html_e('Back to Home', 'mileym3dia'); ?>
+                </a>
+                <button onclick="history.back()" class="btn btn--secondary">
+                    <?php esc_html_e('Go Back', 'mileym3dia'); ?>
+                </button>
+            </div>
+            
+            <div class="error-search">
+                <p><?php esc_html_e('Or try searching:', 'mileym3dia'); ?></p>
+                <?php get_search_form(); ?>
+            </div>
         </div>
-    </section>
-
+    </div>
 </main>
 
-<?php get_footer(); ?>
+<?php
+get_footer();

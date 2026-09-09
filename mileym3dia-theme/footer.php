@@ -1,54 +1,100 @@
-    <footer class="site-footer" id="siteFooter">
-        <div class="container">
-            <div class="footer-grid">
+<?php
+/**
+ * Footer Template
+ *
+ * @package MILEYM3DIA
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
+
+    <footer id="siteFooter" class="site-footer" role="contentinfo">
+        <div class="footer-container">
+            <?php if (is_active_sidebar('footer-1') || is_active_sidebar('footer-2') || is_active_sidebar('footer-3') || is_active_sidebar('footer-4')) : ?>
+                <div class="footer-widgets">
+                    <?php if (is_active_sidebar('footer-1')) : ?>
+                        <div class="footer-widget-area footer-1">
+                            <?php dynamic_sidebar('footer-1'); ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if (is_active_sidebar('footer-2')) : ?>
+                        <div class="footer-widget-area footer-2">
+                            <?php dynamic_sidebar('footer-2'); ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if (is_active_sidebar('footer-3')) : ?>
+                        <div class="footer-widget-area footer-3">
+                            <?php dynamic_sidebar('footer-3'); ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if (is_active_sidebar('footer-4')) : ?>
+                        <div class="footer-widget-area footer-4">
+                            <?php dynamic_sidebar('footer-4'); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="footer-main">
                 <div class="footer-brand">
-                    <h3 class="footer-logo">MILEYM3DIA</h3>
-                    <p class="footer-description">
-                        A creative media collective operating at the intersection of 
-                        underground culture, digital innovation, and visual storytelling.
-                    </p>
+                    <?php if (has_custom_logo()) : ?>
+                        <div class="site-logo">
+                            <?php the_custom_logo(); ?>
+                        </div>
+                    <?php else : ?>
+                        <div class="site-title">
+                            <a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
+                                <?php bloginfo('name'); ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <p class="site-description"><?php bloginfo('description'); ?></p>
                 </div>
-                
-                <div class="footer-column">
-                    <h4 class="footer-title">Navigate</h4>
-                    <nav class="footer-links">
-                        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-                        <a href="<?php echo esc_url(home_url('/about/')); ?>">About</a>
-                        <a href="<?php echo esc_url(home_url('/services/')); ?>">Services</a>
-                        <a href="<?php echo esc_url(home_url('/portfolio/')); ?>">Portfolio</a>
-                        <a href="<?php echo esc_url(home_url('/blog/')); ?>">Blog</a>
-                        <a href="<?php echo esc_url(home_url('/contact/')); ?>">Contact</a>
+
+                <?php mileym3dia_social_links('footer-social'); ?>
+
+                <?php if (has_nav_menu('footer')) : ?>
+                    <nav class="footer-navigation" role="navigation" aria-label="<?php esc_attr_e('Footer Menu', 'mileym3dia'); ?>">
+                        <?php
+                        wp_nav_menu(array(
+                            'theme_location' => 'footer',
+                            'menu_class'     => 'footer-menu',
+                            'container'      => false,
+                            'depth'          => 1,
+                        ));
+                        ?>
                     </nav>
-                </div>
-                
-                <div class="footer-column">
-                    <h4 class="footer-title">Connect</h4>
-                    <nav class="footer-links">
-                        <a href="#">Instagram</a>
-                        <a href="#">Twitter</a>
-                        <a href="#">Behance</a>
-                        <a href="#">Vimeo</a>
-                        <a href="#">LinkedIn</a>
-                    </nav>
-                </div>
-                
-                <div class="footer-column">
-                    <h4 class="footer-title">Legal</h4>
-                    <nav class="footer-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="mailto:hello@mileym3dia.com">hello@mileym3dia.com</a>
-                    </nav>
-                </div>
+                <?php endif; ?>
             </div>
-            
+
             <div class="footer-bottom">
-                <span>© <?php echo date('Y'); ?> MILEYM3DIA. All Rights Reserved.</span>
-                <span>Designed & Built in Los Angeles</span>
+                <div class="footer-copyright">
+                    <?php
+                    $copyright = get_theme_mod('mileym3dia_footer_copyright', __('&copy; ' . date('Y') . ' MILEYM3DIA. All rights reserved.', 'mileym3dia'));
+                    echo wp_kses_post($copyright);
+                    ?>
+                </div>
+                
+                <?php
+                $contact_email = get_theme_mod('mileym3dia_contact_email', 'hello@mileym3dia.com');
+                if ($contact_email) :
+                ?>
+                    <a href="mailto:<?php echo esc_attr($contact_email); ?>" class="footer-email">
+                        <?php echo esc_html($contact_email); ?>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </footer>
 
-    <?php wp_footer(); ?>
+</div><!-- #page -->
+
+<?php wp_footer(); ?>
+
 </body>
 </html>

@@ -1,5 +1,6 @@
 /**
  * MILEYM3DIA Theme - Main JavaScript
+ * Handles navigation, animations, and interactive elements
  */
 
 (function() {
@@ -8,7 +9,9 @@
     // DOM Ready
     document.addEventListener('DOMContentLoaded', function() {
         
-        // Scroll Progress Bar
+        // ========================================
+        // SCROLL PROGRESS BAR
+        // ========================================
         const scrollProgress = document.getElementById('scrollProgress');
         if (scrollProgress) {
             window.addEventListener('scroll', function() {
@@ -19,26 +22,62 @@
             });
         }
 
-        // Mobile Menu Toggle
+        // ========================================
+        // MOBILE MENU TOGGLE
+        // ========================================
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const mobileMenuClose = document.getElementById('mobileMenuClose');
         const navMobile = document.getElementById('navMobile');
+        const body = document.body;
         
-        if (mobileMenuToggle && navMobile) {
-            mobileMenuToggle.addEventListener('click', function() {
+        function openMobileMenu() {
+            if (navMobile) {
                 navMobile.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                navMobile.setAttribute('aria-hidden', 'false');
+            }
+            body.style.overflow = 'hidden';
+            body.setAttribute('data-menu-open', 'true');
+            if (mobileMenuToggle) {
+                mobileMenuToggle.setAttribute('aria-expanded', 'true');
+            }
+        }
+        
+        function closeMobileMenu() {
+            if (navMobile) {
+                navMobile.classList.remove('active');
+                navMobile.setAttribute('aria-hidden', 'true');
+            }
+            body.style.overflow = '';
+            body.removeAttribute('data-menu-open');
+            if (mobileMenuToggle) {
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            }
+        }
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', openMobileMenu);
+            mobileMenuToggle.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openMobileMenu();
+                }
             });
         }
         
-        if (mobileMenuClose && navMobile) {
-            mobileMenuClose.addEventListener('click', function() {
-                navMobile.classList.remove('active');
-                document.body.style.overflow = '';
-            });
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
         }
+        
+        // Close menu on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navMobile && navMobile.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
 
-        // Header scroll effect
+        // ========================================
+        // HEADER SCROLL EFFECT
+        // ========================================
         const siteHeader = document.getElementById('siteHeader');
         if (siteHeader) {
             let lastScroll = 0;
@@ -46,38 +85,46 @@
                 const currentScroll = window.scrollY;
                 
                 if (currentScroll > 100) {
-                    siteHeader.style.background = 'rgba(10, 10, 10, 0.95)';
+                    siteHeader.classList.add('scrolled');
                 } else {
-                    siteHeader.style.background = 'rgba(10, 10, 10, 0.9)';
+                    siteHeader.classList.remove('scrolled');
                 }
                 
                 lastScroll = currentScroll;
             });
         }
 
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // ========================================
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        // ========================================
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (!prefersReducedMotion) {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                    observer.unobserve(entry.target);
-                }
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for animation
+            const animateElements = document.querySelectorAll('.portfolio-item, .service-item, .blog-card, .capability-item, .resource-item, .section-heading');
+            animateElements.forEach(function(el) {
+                el.classList.add('animate-on-scroll');
+                observer.observe(el);
             });
-        }, observerOptions);
+        }
 
-        // Observe elements for animation
-        const animateElements = document.querySelectorAll('.work-item, .service-card, .blog-card, .capability-item, .resource-item');
-        animateElements.forEach(function(el) {
-            el.style.opacity = '0';
-            observer.observe(el);
-        });
-
-        // Smooth scroll for anchor links
+        // ========================================
+        // SMOOTH SCROLL FOR ANCHOR LINKS
+        // ========================================
         document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
             anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
@@ -86,7 +133,7 @@
                     if (target) {
                         e.preventDefault();
                         target.scrollIntoView({
-                            behavior: 'smooth',
+                            behavior: prefersReducedMotion ? 'auto' : 'smooth',
                             block: 'start'
                         });
                     }
@@ -94,7 +141,9 @@
             });
         });
 
-        // Capability items hover effect enhancement
+        // ========================================
+        // CAPABILITY ITEMS HOVER EFFECT
+        // ========================================
         const capabilityItems = document.querySelectorAll('.capability-item');
         capabilityItems.forEach(function(item) {
             item.addEventListener('mouseenter', function() {
@@ -112,84 +161,81 @@
             });
         });
 
-        // Parallax effect for hero grid
+        // ========================================
+        // PARALLAX EFFECT FOR HERO ELEMENTS
+        // ========================================
         const heroGrid = document.querySelector('.hero-grid');
         const heroMark = document.querySelector('.hero-mark');
         
-        if (heroGrid || heroMark) {
+        if ((heroGrid || heroMark) && !prefersReducedMotion) {
             window.addEventListener('scroll', function() {
                 const scrolled = window.scrollY;
+                const heroHeight = window.innerHeight;
                 
-                if (heroGrid && scrolled < window.innerHeight) {
-                    heroGrid.style.transform = 'translateY(' + (scrolled * 0.3) + 'px)';
-                }
-                
-                if (heroMark && scrolled < window.innerHeight) {
-                    heroMark.style.transform = 'translateY(' + (scrolled * 0.2) + 'px)';
+                if (scrolled < heroHeight) {
+                    if (heroGrid) {
+                        heroGrid.style.transform = 'translateY(' + (scrolled * 0.3) + 'px)';
+                    }
+                    if (heroMark) {
+                        heroMark.style.transform = 'translateY(' + (scrolled * 0.2) + 'px)';
+                    }
                 }
             });
         }
 
-        // Add loaded class to body for CSS transitions
+        // ========================================
+        // ADD LOADED CLASS TO BODY
+        // ========================================
         document.body.classList.add('loaded');
 
-        // Cursor effect (optional, can be removed if not desired)
-        const cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        cursor.innerHTML = '<div class="cursor-dot"></div><div class="cursor-ring"></div>';
-        
-        // Only add custom cursor on non-touch devices
-        if (!('ontouchstart' in window)) {
-            document.body.appendChild(cursor);
-            
-            const cursorDot = cursor.querySelector('.cursor-dot');
-            const cursorRing = cursor.querySelector('.cursor-ring');
-            
-            let mouseX = 0, mouseY = 0;
-            let ringX = 0, ringY = 0;
-            
-            document.addEventListener('mousemove', function(e) {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
+        // ========================================
+        // STICKY HEADER TOGGLE (if enabled)
+        // ========================================
+        const stickyHeader = document.querySelector('.site-header.sticky');
+        if (stickyHeader) {
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.scrollY;
                 
-                if (cursorDot) {
-                    cursorDot.style.left = mouseX + 'px';
-                    cursorDot.style.top = mouseY + 'px';
+                if (scrollTop > lastScrollTop && scrollTop > 200) {
+                    stickyHeader.classList.add('header-up');
+                } else {
+                    stickyHeader.classList.remove('header-up');
                 }
+                
+                if (scrollTop > 100) {
+                    stickyHeader.classList.add('header-sticky');
+                } else {
+                    stickyHeader.classList.remove('header-sticky');
+                }
+                
+                lastScrollTop = scrollTop;
             });
+        }
+
+        // ========================================
+        // FORM VALIDATION ENHANCEMENT
+        // ========================================
+        const contactForm = document.querySelector('.contact-form form');
+        if (contactForm) {
+            const inputs = contactForm.querySelectorAll('input[type="email"], input[type="text"], textarea');
             
-            function animateCursor() {
-                ringX += (mouseX - ringX) * 0.15;
-                ringY += (mouseY - ringY) * 0.15;
-                
-                if (cursorRing) {
-                    cursorRing.style.left = ringX + 'px';
-                    cursorRing.style.top = ringY + 'px';
-                }
-                
-                requestAnimationFrame(animateCursor);
-            }
-            animateCursor();
-            
-            // Hover states for interactive elements
-            const interactiveElements = document.querySelectorAll('a, button, .capability-item, .work-item, .service-card');
-            interactiveElements.forEach(function(el) {
-                el.addEventListener('mouseenter', function() {
-                    if (cursorRing) {
-                        cursorRing.style.transform = 'scale(1.5)';
-                        cursorRing.style.borderColor = '#EF252C';
-                    }
-                });
-                
-                el.addEventListener('mouseleave', function() {
-                    if (cursorRing) {
-                        cursorRing.style.transform = 'scale(1)';
-                        cursorRing.style.borderColor = 'var(--color-off-white)';
+            inputs.forEach(function(input) {
+                input.addEventListener('blur', function() {
+                    if (this.validity.valid) {
+                        this.classList.add('valid');
+                        this.classList.remove('invalid');
+                    } else if (this.value !== '') {
+                        this.classList.add('invalid');
+                        this.classList.remove('valid');
                     }
                 });
             });
         }
 
+        // ========================================
+        // LOG CONSOLE MESSAGE
+        // ========================================
         console.log('MILEYM3DIA Theme Loaded');
     });
 

@@ -1,23 +1,36 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Page Template
+ *
+ * @package MILEYM3DIA
+ */
 
-<main class="site-main" id="siteMain">
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-    <?php while (have_posts()) : the_post(); ?>
-    
-    <section class="page-title-section">
-        <div class="container">
-            <h1 class="page-title"><?php the_title(); ?></h1>
-        </div>
-    </section>
-    
-    <section class="section-loose">
-        <div class="container container-narrow singular-content">
-            <?php the_content(); ?>
-        </div>
-    </section>
-    
-    <?php endwhile; ?>
+get_header();
+?>
 
+<main id="primary" class="site-main">
+    <article id="post-<?php the_ID(); ?>" <?php post_class('page-content'); ?>>
+        <?php while (have_posts()) : the_post(); ?>
+            <header class="page-header">
+                <h1 class="page-title"><?php the_title(); ?></h1>
+            </header>
+            
+            <div class="entry-content">
+                <?php the_content(); ?>
+            </div>
+            
+            <?php if (comments_open() || get_comments_number()) : ?>
+                <div class="comments-area">
+                    <?php comments_template(); ?>
+                </div>
+            <?php endif; ?>
+        <?php endwhile; ?>
+    </article>
 </main>
 
-<?php get_footer(); ?>
+<?php
+get_footer();
