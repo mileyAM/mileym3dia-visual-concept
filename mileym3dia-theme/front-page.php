@@ -82,58 +82,15 @@
                     wp_reset_postdata();
                 else :
                 ?>
-                    <!-- Placeholder work items with actual images -->
-                    <article class="work-item">
-                        <span class="work-number">01</span>
-                        <a href="#">
-                            <div class="work-image">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-1.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
-                            </div>
-                            <div class="work-overlay">
-                                <h3 class="work-title">Untitled Project I</h3>
-                                <span class="work-category">Visual Design</span>
-                            </div>
-                        </a>
-                    </article>
-                    
-                    <article class="work-item">
-                        <span class="work-number">02</span>
-                        <a href="#">
-                            <div class="work-image">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-2.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
-                            </div>
-                            <div class="work-overlay">
-                                <h3 class="work-title">Untitled Project II</h3>
-                                <span class="work-category">Music Production</span>
-                            </div>
-                        </a>
-                    </article>
-                    
-                    <article class="work-item">
-                        <span class="work-number">03</span>
-                        <a href="#">
-                            <div class="work-image">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-3.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
-                            </div>
-                            <div class="work-overlay">
-                                <h3 class="work-title">Untitled Project III</h3>
-                                <span class="work-category">Digital Art</span>
-                            </div>
-                        </a>
-                    </article>
-                    
-                    <article class="work-item">
-                        <span class="work-number">04</span>
-                        <a href="#">
-                            <div class="work-image">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-4.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
-                            </div>
-                            <div class="work-overlay">
-                                <h3 class="work-title">Untitled Project IV</h3>
-                                <span class="work-category">Branding</span>
-                            </div>
-                        </a>
-                    </article>
+                    <div class="empty-state-design">
+                        <div class="empty-state-visual">
+                            <div class="grid-pattern-small"></div>
+                            <div class="floating-mark red-mark"></div>
+                        </div>
+                        <h3>PROJECT ARCHIVE LOADING</h3>
+                        <p>Curated works in visual design, video, and digital art coming soon.</p>
+                        <a href="<?php echo esc_url(home_url('/contact')); ?>" class="btn btn-outline">INQUIRE NOW</a>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
