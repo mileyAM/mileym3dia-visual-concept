@@ -49,7 +49,7 @@
             <div class="work-grid">
                 <?php
                 $work_args = array(
-                    'post_type'      => 'post',
+                    'post_type'      => 'project',
                     'posts_per_page' => 4,
                     'post_status'    => 'publish',
                 );
@@ -67,9 +67,7 @@
                                 <?php if (has_post_thumbnail()) : ?>
                                     <?php the_post_thumbnail('mileym3dia-medium'); ?>
                                 <?php else : ?>
-                                    <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a 0%,#2a2a2a 100%);display:flex;align-items:center;justify-content:center;">
-                                        <span class="text-micro">COMING SOON</span>
-                                    </div>
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-<?php echo (($counter - 1) % 4 + 1); ?>.jpg" alt="<?php the_title_attribute(); ?>" style="width:100%;height:100%;object-fit:cover;" />
                                 <?php endif; ?>
                             </div>
                             <div class="work-overlay">
@@ -84,14 +82,12 @@
                     wp_reset_postdata();
                 else :
                 ?>
-                    <!-- Placeholder work items -->
+                    <!-- Placeholder work items with actual images -->
                     <article class="work-item">
                         <span class="work-number">01</span>
                         <a href="#">
                             <div class="work-image">
-                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a 0%,#2a2a2a 100%);display:flex;align-items:center;justify-content:center;">
-                                    <span class="text-micro">PROJECT COMING SOON</span>
-                                </div>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-1.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
                             </div>
                             <div class="work-overlay">
                                 <h3 class="work-title">Untitled Project I</h3>
@@ -104,13 +100,37 @@
                         <span class="work-number">02</span>
                         <a href="#">
                             <div class="work-image">
-                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a 0%,#2a2a2a 100%);display:flex;align-items:center;justify-content:center;">
-                                    <span class="text-micro">PROJECT COMING SOON</span>
-                                </div>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-2.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
                             </div>
                             <div class="work-overlay">
                                 <h3 class="work-title">Untitled Project II</h3>
                                 <span class="work-category">Music Production</span>
+                            </div>
+                        </a>
+                    </article>
+                    
+                    <article class="work-item">
+                        <span class="work-number">03</span>
+                        <a href="#">
+                            <div class="work-image">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-3.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
+                            </div>
+                            <div class="work-overlay">
+                                <h3 class="work-title">Untitled Project III</h3>
+                                <span class="work-category">Digital Art</span>
+                            </div>
+                        </a>
+                    </article>
+                    
+                    <article class="work-item">
+                        <span class="work-number">04</span>
+                        <a href="#">
+                            <div class="work-image">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio-4.jpg" alt="Project placeholder" style="width:100%;height:100%;object-fit:cover;" />
+                            </div>
+                            <div class="work-overlay">
+                                <h3 class="work-title">Untitled Project IV</h3>
+                                <span class="work-category">Branding</span>
                             </div>
                         </a>
                     </article>
@@ -163,9 +183,7 @@
                     <?php if (has_post_thumbnail()) : ?>
                         <?php the_post_thumbnail('mileym3dia-large'); ?>
                     <?php else : ?>
-                        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a 0%,#2a2a2a 100%);display:flex;align-items:center;justify-content:center;">
-                            <span class="text-micro">BRAND IMAGE</span>
-                        </div>
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about-image.jpg" alt="MILEYM3DIA brand image" style="width:100%;height:100%;object-fit:cover;" />
                     <?php endif; ?>
                 </div>
                 
@@ -192,7 +210,7 @@
 
     <!-- VISUAL TRANSITION -->
     <section class="visual-transition">
-        <div class="transition-pattern"></div>
+        <div class="transition-pattern" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/services-bg.jpg');"></div>
         <div class="container">
             <h2 class="transition-text">
                 Create Without<br>Limits
@@ -266,7 +284,7 @@
     </section>
 
     <!-- RESOURCES -->
-    <section class="resources-section section-loose">
+    <section class="resources-section section-loose" style="background-image: linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.95)), url('<?php echo get_template_directory_uri(); ?>/assets/images/resources-visual.jpg'); background-size: cover; background-position: center;">
         <div class="container">
             <div class="section-header">
                 <span class="section-label">[05] Resources</span>
@@ -329,6 +347,7 @@
                 $blog_query = new WP_Query($blog_args);
                 
                 if ($blog_query->have_posts()) :
+                    $blog_counter = 1;
                     while ($blog_query->have_posts()) : $blog_query->the_post();
                 ?>
                     <article class="blog-card">
@@ -337,7 +356,7 @@
                                 <?php if (has_post_thumbnail()) : ?>
                                     <?php the_post_thumbnail('mileym3dia-medium'); ?>
                                 <?php else : ?>
-                                    <div style="width:100%;height:100%;background:linear-gradient(135deg,#2a2a2a 0%,#3a3a3a 100%);"></div>
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-<?php echo $blog_counter; ?>.jpg" alt="<?php the_title_attribute(); ?>" style="width:100%;height:100%;object-fit:cover;" />
                                 <?php endif; ?>
                             </div>
                             <div class="blog-content">
@@ -348,6 +367,7 @@
                         </a>
                     </article>
                 <?php
+                        $blog_counter++;
                     endwhile;
                     wp_reset_postdata();
                 else :
@@ -355,14 +375,25 @@
                     <article class="blog-card">
                         <a href="#">
                             <div class="blog-image">
-                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#2a2a2a 0%,#3a3a3a 100%);display:flex;align-items:center;justify-content:center;">
-                                    <span class="text-micro">CONTENT COMING SOON</span>
-                                </div>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-1.jpg" alt="Blog placeholder" style="width:100%;height:100%;object-fit:cover;" />
                             </div>
                             <div class="blog-content">
                                 <span class="blog-date">COMING SOON</span>
                                 <h3 class="blog-title">First Post Coming</h3>
                                 <p class="blog-excerpt">Stay tuned for our latest thoughts and updates.</p>
+                            </div>
+                        </a>
+                    </article>
+                    
+                    <article class="blog-card">
+                        <a href="#">
+                            <div class="blog-image">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/blog-2.jpg" alt="Blog placeholder" style="width:100%;height:100%;object-fit:cover;" />
+                            </div>
+                            <div class="blog-content">
+                                <span class="blog-date">COMING SOON</span>
+                                <h3 class="blog-title">Second Post Coming</h3>
+                                <p class="blog-excerpt">More creative insights on the way.</p>
                             </div>
                         </a>
                     </article>
